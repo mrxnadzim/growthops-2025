@@ -1,6 +1,6 @@
 import Navbar from "../components/Navbar.jsx";
 import { useState, useRef } from "react";
-import {arrowdown, redgradients, cyanGradient } from "../assets";
+import { arrowdown, redgradients, cyanGradient } from "../assets";
 import { Link } from "react-router-dom";
 import {
   FaArrowUpRightFromSquare,
@@ -12,7 +12,7 @@ import {
   FaLinkedinIn,
 } from "react-icons/fa6";
 import { FiAtSign } from "react-icons/fi";
-import emailjs from '@emailjs/browser';
+import emailjs from "@emailjs/browser";
 import { ToastContainer, toast } from "react-toastify";
 
 const Contact = () => {
@@ -59,28 +59,68 @@ const Contact = () => {
   const sendEmail = (event) => {
     event.preventDefault();
 
-  if (!form.current.tnc.checked) {
-    toast.error("You must agree to the website's terms & conditions before submitting.", {
-      position: "top-center",});
-    return; // Stop form submission
-  }
+    const formEl = form.current;
+    const fullName = formEl.fullname.value.trim();
+    const phoneNo = formEl.phoneno.value.trim();
+    const email = formEl.user_email.value.trim();
+    const inquiryType = formEl.inquiry_type.value;
+    const message = formEl.message.value.trim();
+    const tncChecked = formEl.tnc.checked;
 
-    emailjs.sendForm('service_6ssy6ou', 'template_6sya3c8', form.current, {
-      publicKey: 'atEFUpC5Chw5PG8DI',
-    }).then(
-      (result) => {
-        console.log(result.text);
-        toast.success("Email sent successfully!", {
+    if (!fullName) {
+      toast.error("Please enter your full name", { 
+        position: "top-center",
+       });
+      return;
+    }
+    if (!phoneNo) {
+      toast.error("Please enter your phone number", {
+        position: "top-center",
+      });
+      return;
+    }
+    if (!email) {
+      toast.error("Please enter your email address", {
+        position: "top-center",
+      });
+      return;
+    }
+    if (!inquiryType) {
+      toast.error("Please select an inquiry type", { position: "top-center" });
+      return;
+    }
+    if (!message) {
+      toast.error("Please enter your message", { position: "top-center" });
+      return;
+    }
+    if (!tncChecked) {
+      toast.error(
+        "You must agree to the website's terms & conditions before submitting.",
+        {
           position: "top-center",
-        });
-      }, 
-      (error) => {
-        console.log(error.text);
-        toast.error("Failed to send email. Please try again later.", {
-          position: "top-center",
-        });
-      }
-    );
+        }
+      );
+      return; // Stop form submission
+    }
+
+    emailjs
+      .sendForm("service_6ssy6ou", "template_6sya3c8", form.current, {
+        publicKey: "atEFUpC5Chw5PG8DI",
+      })
+      .then(
+        (result) => {
+          console.log(result.text);
+          toast.success("Email sent successfully!", {
+            position: "top-center",
+          });
+        },
+        (error) => {
+          console.log(error.text);
+          toast.error("Failed to send email. Please try again later.", {
+            position: "top-center",
+          });
+        }
+      );
   };
 
   return (
@@ -107,7 +147,8 @@ const Contact = () => {
         Let's create something awesome together
       </p>
       <form
-        onSubmit={sendEmail} ref={form}
+        onSubmit={sendEmail}
+        ref={form}
         className="mt-10 max-w-screen flex flex-col gap-y-5 justify-center max-xs:px-6 xs:max-lg:max-w-md xs:max-lg:mx-auto 
         lg:ml-20 lg:mr-120 xl:mr-135"
       >
