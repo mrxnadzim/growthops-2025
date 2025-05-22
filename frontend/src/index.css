@@ -1,0 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+@import "tailwindcss";
+
+@theme {
+  --font-montserrat: "Montserrat", "sans-serif";
+  --color-input: #F5F5F53D;
+
+  --breakpoint-xs: 37rem;
+
+  --animate-infinite-scrollright: infinite-scrollright 20s linear infinite;
+  --animate-infinite-scrollleft: infinite-scrollleft 20s linear infinite;
+
+  @keyframes infinite-scrollright {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(calc(-50% - 10px));
+    }
+  }
+
+  @keyframes infinite-scrollleft {
+    0% {
+      transform: translateX(calc(-50% - 10px));
+    }
+    100% {
+      transform: translateX(0);
+    }
+  }
+}
